@@ -44,17 +44,37 @@ def is_haiku(haiku):
 
     return actual == correct
 
+
 def draw_haiku(haiku):
-    im = Image.new("RGBA", (400, 400), (255, 255, 255))
+    im = Image.new("RGBA", (500, 500), (255, 255, 255))
     dr = ImageDraw.Draw(im)
-    font = ImageFont.truetype("~/fonts/Hack/Hack-Regular.ttf", 35)
+    font = ImageFont.truetype("usr/share/fonts/TTF/DejaVuSans-Bold.ttf", 25)
     text_size = dr.textsize(haiku, font)
     dr.text(
         ((im.size[0] - text_size[0]) / 2, (im.size[1] - text_size[1]) / 2),
         haiku, (0, 0, 0), font=font
     )
-    im.show()
+    return im
+
+
+def main():
+    hk = input("Input your haiku separating each sentence with a comma\n>>> ")
+    parsed = hk.split(',')
+
+    while len(parsed) != 3:
+        print("Your input is incorrect!")
+        hk = input("Input your haiku separating each sentence with a comma\n>>> ")
+        parsed = hk.split(',')
+
+    haiku = '\n'.join(parsed)
+
+    if is_haiku(haiku):
+        im = draw_haiku(haiku)
+        im.save("my_haiku.png", "PNG")
+    else:
+        print("Your haiku doesn't contain the right amount of syllables!")
+        main()
 
 
 if __name__ == '__main__':
-    draw_haiku("Hello World!\nHello World!\nHelloWorld!")
+    main()
